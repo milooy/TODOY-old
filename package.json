@@ -16,6 +16,9 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-ssr": "4.0.0",
+    "@emotion/babel-preset-css-prop": "^10.0.27",
+    "@emotion/core": "^10.0.35",
+    "@emotion/styled": "^10.0.27",
     "@nexus/schema": "0.15.0",
     "@prisma/client": "2.6.2",
     "apollo-boost": "0.4.9",

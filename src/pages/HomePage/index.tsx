@@ -2,6 +2,8 @@ import Link from "next/link"
 import gql from "graphql-tag"
 import { useQuery } from "@apollo/react-hooks"
 import { withApollo } from "../../../apollo/client"
+import { css } from "@emotion/core"
+import styled from "@emotion/styled"
 
 const FeedQuery = gql`
   query FeedQuery {
@@ -36,6 +38,14 @@ const Post = ({ post }) => (
   </Link>
 )
 
+const style = css`
+  color: hotpink;
+`
+
+const Button = styled.button`
+  color: hotpink;
+`
+
 const HomePage = () => {
   const { loading, error, data } = useQuery(FeedQuery)
 
@@ -47,7 +57,11 @@ const HomePage = () => {
   }
 
   return (
-    <h1>hi</h1>
+    <div>
+      <div css={style}>Some hotpink text</div>
+      <h1>hi</h1>
+      <Button>할루</Button>
+    </div>
   )
 }
 
