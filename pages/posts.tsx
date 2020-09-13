@@ -1,8 +1,9 @@
-import Layout from "../components/Layout"
 import Link from "next/link"
 import { withApollo } from "../apollo/client"
 import gql from "graphql-tag"
 import { useQuery } from "@apollo/react-hooks"
+import React from "react"
+import Layout from "reusables/LegacyLayout"
 
 const FeedQuery = gql`
   query FeedQuery {

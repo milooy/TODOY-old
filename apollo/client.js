@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import Layout from 'reusables/Layout'
 
 let apolloClient = null
 
@@ -19,7 +20,9 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
     const client = apolloClient || initApolloClient(apolloState)
     return (
       <ApolloProvider client={client}>
-        <PageComponent {...pageProps} />
+        <Layout>
+          <PageComponent {...pageProps} />
+        </Layout>
       </ApolloProvider>
     )
   }

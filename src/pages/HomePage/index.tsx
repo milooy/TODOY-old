@@ -4,6 +4,11 @@ import { useQuery } from "@apollo/react-hooks"
 import { withApollo } from "../../../apollo/client"
 import { css } from "@emotion/core"
 import styled from "@emotion/styled"
+import React from "react"
+import TodoInput from "reusables/TodoInput"
+import Timeline from "./components/Timeline"
+import Inbox from "./components/Inbox"
+import Layout from "reusables/Layout"
 
 const FeedQuery = gql`
   query FeedQuery {
@@ -42,8 +47,11 @@ const style = css`
   color: hotpink;
 `
 
-const Button = styled.button`
-  color: hotpink;
+const Container = styled.div`
+justify-content: space-between;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 `
 
 const HomePage = () => {
@@ -57,11 +65,14 @@ const HomePage = () => {
   }
 
   return (
-    <div>
-      <div css={style}>Some hotpink text</div>
-      <h1>hi</h1>
-      <Button>할루</Button>
-    </div>
+    <Container>
+      <div>
+        <TodoInput />
+      </div>
+      <div><Timeline /></div>
+      <div css={{ height: '30vh', border: '2px solid coral' }}><Inbox /></div>
+    </Container>
+
   )
 }
 

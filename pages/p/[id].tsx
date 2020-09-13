@@ -1,8 +1,9 @@
-import Layout from '../../components/Layout'
 import Router, { useRouter } from 'next/router'
 import { withApollo } from '../../apollo/client'
 import gql from 'graphql-tag'
 import { useQuery, useMutation } from '@apollo/react-hooks'
+import React from 'react'
+import Layout from 'reusables/LegacyLayout'
 
 const PostQuery = gql`
   query PostQuery($postId: String!) {
