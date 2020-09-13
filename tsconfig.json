@@ -6,6 +6,7 @@
       If you need to change it, you should use the --compiler-options or provide a separate 
       tsconfig.json entirely.
     */
+    "baseUrl": "src",
     "module": "esnext",
     "target": "ES2019",
     "lib": [
@@ -30,6 +31,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-  ]
+    "**/*.tsx",
+    "src"
+  ],
 }
