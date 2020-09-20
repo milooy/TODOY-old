@@ -25,6 +25,17 @@ const FeedQuery = gql`
   }
 `;
 
+const TodosQuery = gql`
+  query TodosQuery {
+    todos {
+      id
+      text
+    }
+  }
+`;
+
+const Todo = ({ todo }) => <div>{todo.text}</div>;
+
 const Post = ({ post }) => (
   <Link href="/p/[id]" as={`/p/${post.id}`}>
     <a>
@@ -55,7 +66,9 @@ const Container = styled.div`
 `;
 
 const HomePage = ({ foo }) => {
-  const { loading, error, data } = useQuery(FeedQuery);
+  // const { loading, error, data } = useQuery(FeedQuery);
+  const { loading, error, data } = useQuery(TodosQuery);
+  console.log({ loading, error, data });
 
   if (loading) {
     return <div>Loading ...</div>;
@@ -68,6 +81,9 @@ const HomePage = ({ foo }) => {
     <Container>
       <div>
         <TodoInput />
+        {data.todos.map((todo) => (
+          <Todo todo={todo} />
+        ))}
       </div>
       <div>
         <Timeline />

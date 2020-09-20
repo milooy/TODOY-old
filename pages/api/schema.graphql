@@ -27,6 +27,12 @@ type Query {
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
   post(postId: String!): Post!
+  todos: [Todo!]!
+}
+
+type Todo {
+  id: Int!
+  text: String!
 }
 
 type User {

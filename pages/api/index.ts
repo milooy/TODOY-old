@@ -53,6 +53,15 @@ const Post = objectType({
   },
 });
 
+const Todo = objectType({
+  name: "Todo",
+  definition(t) {
+    t.int("id");
+    t.string("text");
+  },
+});
+
+// Query: 데이터를 가져오는데 사용
 const Query = objectType({
   name: "Query",
   definition(t) {
@@ -64,6 +73,15 @@ const Query = objectType({
       resolve: (_, args) => {
         return prisma.post.findOne({
           where: { id: Number(args.postId) },
+        });
+      },
+    });
+
+    t.list.field("todos", {
+      type: "Todo",
+      resolve: (_parent, _args, ctx) => {
+        return prisma.todo.findMany({
+          where: { userId: 3 },
         });
       },
     });
@@ -105,6 +123,7 @@ const Query = objectType({
   },
 });
 
+// Mutation: 데이터를 조작하는데 사용
 const Mutation = objectType({
   name: "Mutation",
   definition(t) {
@@ -175,7 +194,7 @@ const Mutation = objectType({
 });
 
 export const schema = makeSchema({
-  types: [Query, Mutation, Post, User, GQLDate],
+  types: [Query, Mutation, Post, Todo, User, GQLDate],
   outputs: {
     typegen: path.join(process.cwd(), "pages", "api", "nexus-typegen.ts"),
     schema: path.join(process.cwd(), "pages", "api", "schema.graphql"),

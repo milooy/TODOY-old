@@ -28,13 +28,13 @@ model Post {
 model Todo {
   id          Int       @default(autoincrement()) @id
   userId      Int
-  user        User      @relation(fields: [userId], references: [id])
   categoryId  Int?
-  category    Category?  @relation(fields: [categoryId], references: [id])
   text        String
   createdTime DateTime  @default(now())
   doneTime    DateTime?
   status      String    @default("TODO")
+  category    Category? @relation(fields: [categoryId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
 }
 
 model Category {

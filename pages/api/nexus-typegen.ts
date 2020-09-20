@@ -45,6 +45,10 @@ export interface NexusGenRootTypes {
     title: string; // String!
   }
   Query: {};
+  Todo: { // root type
+    id: number; // Int!
+    text: string; // String!
+  }
   User: { // root type
     email: string; // String!
     id: number; // Int!
@@ -80,6 +84,11 @@ export interface NexusGenFieldTypes {
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     post: NexusGenRootTypes['Post']; // Post!
+    todos: NexusGenRootTypes['Todo'][]; // [Todo!]!
+  }
+  Todo: { // field return type
+    id: number; // Int!
+    text: string; // String!
   }
   User: { // field return type
     email: string; // String!
@@ -122,7 +131,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "Mutation" | "Post" | "Query" | "Todo" | "User";
 
 export type NexusGenInputNames = never;
 
