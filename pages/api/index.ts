@@ -1,88 +1,93 @@
-import { makeSchema, objectType, stringArg, asNexusMethod } from '@nexus/schema'
-import { GraphQLDate } from 'graphql-iso-date'
-import { PrismaClient } from '@prisma/client'
-import { ApolloServer } from 'apollo-server-micro'
-import path from 'path'
+import {
+  makeSchema,
+  objectType,
+  stringArg,
+  asNexusMethod,
+} from "@nexus/schema";
+import { GraphQLDate } from "graphql-iso-date";
+import { PrismaClient } from "@prisma/client";
+import { ApolloServer } from "apollo-server-micro";
+import path from "path";
 
-export const GQLDate = asNexusMethod(GraphQLDate, 'date')
+export const GQLDate = asNexusMethod(GraphQLDate, "date");
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const User = objectType({
-  name: 'User',
+  name: "User",
   definition(t) {
-    t.int('id')
-    t.string('name')
-    t.string('email')
-    t.list.field('posts', {
-      type: 'Post',
-      resolve: parent =>
+    t.int("id");
+    t.string("name");
+    t.string("email");
+    t.list.field("posts", {
+      type: "Post",
+      resolve: (parent) =>
         prisma.user
           .findOne({
             where: { id: Number(parent.id) },
           })
           .posts(),
-    })
+    });
   },
-})
+});
 
 const Post = objectType({
-  name: 'Post',
+  name: "Post",
   definition(t) {
-    t.int('id')
-    t.string('title')
-    t.string('content', {
+    t.int("id");
+    t.string("title");
+    t.string("content", {
       nullable: true,
-    })
-    t.boolean('published')
-    t.field('author', {
-      type: 'User',
+    });
+    t.boolean("published");
+    t.field("author", {
+      type: "User",
       nullable: true,
-      resolve: parent =>
+      resolve: (parent) =>
         prisma.post
           .findOne({
             where: { id: Number(parent.id) },
           })
           .author(),
-    })
+    });
   },
-})
+});
 
 const Query = objectType({
-  name: 'Query',
+  name: "Query",
   definition(t) {
-    t.field('post', {
-      type: 'Post',
+    t.field("post", {
+      type: "Post",
       args: {
         postId: stringArg({ nullable: false }),
       },
       resolve: (_, args) => {
         return prisma.post.findOne({
           where: { id: Number(args.postId) },
-        })
+        });
       },
-    })
+    });
 
-    t.list.field('feed', {
-      type: 'Post',
+    t.list.field("feed", {
+      type: "Post",
       resolve: (_parent, _args, ctx) => {
         return prisma.post.findMany({
           where: { published: true },
-        })
+        });
       },
-    })
+    });
 
-    t.list.field('drafts', {
-      type: 'Post',
+    t.list.field("drafts", {
+      type: "Post",
       resolve: (_parent, _args, ctx) => {
         return prisma.post.findMany({
           where: { published: false },
-        })
+        });
       },
-    })
+    });
 
-    t.list.field('filterPosts', {
-      type: 'Post',
+    t.list.field("filterPosts", {
+      type: "Post",
       args: {
         searchString: stringArg({ nullable: true }),
       },
@@ -94,17 +99,17 @@ const Query = objectType({
               { content: { contains: searchString } },
             ],
           },
-        })
+        });
       },
-    })
+    });
   },
-})
+});
 
 const Mutation = objectType({
-  name: 'Mutation',
+  name: "Mutation",
   definition(t) {
-    t.field('signupUser', {
-      type: 'User',
+    t.field("signupUser", {
+      type: "User",
       args: {
         name: stringArg(),
         email: stringArg({ nullable: false }),
@@ -115,12 +120,12 @@ const Mutation = objectType({
             name,
             email,
           },
-        })
+        });
       },
-    })
+    });
 
-    t.field('deletePost', {
-      type: 'Post',
+    t.field("deletePost", {
+      type: "Post",
       nullable: true,
       args: {
         postId: stringArg(),
@@ -128,12 +133,12 @@ const Mutation = objectType({
       resolve: (_, { postId }, ctx) => {
         return prisma.post.delete({
           where: { id: Number(postId) },
-        })
+        });
       },
-    })
+    });
 
-    t.field('createDraft', {
-      type: 'Post',
+    t.field("createDraft", {
+      type: "Post",
       args: {
         title: stringArg({ nullable: false }),
         content: stringArg(),
@@ -149,12 +154,12 @@ const Mutation = objectType({
               connect: { email: authorEmail },
             },
           },
-        })
+        });
       },
-    })
+    });
 
-    t.field('publish', {
-      type: 'Post',
+    t.field("publish", {
+      type: "Post",
       nullable: true,
       args: {
         postId: stringArg(),
@@ -163,19 +168,19 @@ const Mutation = objectType({
         return prisma.post.update({
           where: { id: Number(postId) },
           data: { published: true },
-        })
+        });
       },
-    })
+    });
   },
-})
+});
 
 export const schema = makeSchema({
   types: [Query, Mutation, Post, User, GQLDate],
   outputs: {
-    typegen: path.join(process.cwd(), 'pages', 'api', 'nexus-typegen.ts'),
-    schema: path.join(process.cwd(), 'pages', 'api', 'schema.graphql')
+    typegen: path.join(process.cwd(), "pages", "api", "nexus-typegen.ts"),
+    schema: path.join(process.cwd(), "pages", "api", "schema.graphql"),
   },
-})
+});
 
 export const config = {
   api: {
@@ -184,5 +189,5 @@ export const config = {
 };
 
 export default new ApolloServer({ schema }).createHandler({
-  path: '/api',
+  path: "/api",
 });

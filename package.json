@@ -6,9 +6,12 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "studio": "npx prisma studio --experimental",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
-    "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api"
+    "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api",
+    "migrate:save": "prisma migrate save --experimental",
+    "migrate:up": "prisma migrate up --experimental"
   },
   "keywords": [],
   "author": "",
@@ -37,7 +40,7 @@
     "react-markdown": "4.3.1"
   },
   "devDependencies": {
-    "@prisma/cli": "2.6.2",
+    "@prisma/cli": "^2.6.2",
     "@types/graphql": "14.5.0",
     "@types/node": "13.13.19",
     "@types/react": "16.9.49",
